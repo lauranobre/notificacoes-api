@@ -7,9 +7,11 @@ app.use(express.json());
 
 // Importar rotas
 const eventoRoutes = require("./routes/eventoRoutes");
+const participanteRoutes = require("./routes/participanteRoutes");
 
 // Usar as rotas com prefixo
 app.use("/eventos", eventoRoutes);
+app.use("/participantes", participanteRoutes);
 
 // Rota raiz (informativa)
 app.get("/", (req, res) => {
@@ -17,7 +19,8 @@ app.get("/", (req, res) => {
         mensagem: "API de Notificações",
         rotas: {
             eventos: "/eventos",
-        }
+            participantes: "/participantes"
+        },
     });
 });
 
