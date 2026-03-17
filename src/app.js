@@ -1,23 +1,31 @@
 // src/app.js
 const express = require("express");
 const app = express();
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./swagger");
+
+//DESAFIO
+const InscricaoController = require('./controllers/InscricaoController');
 
 // Middleware para ler JSON no body das requisições
 app.use(express.json());
 
+// Documentação Swagger
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+//DESAFIO
+app.get('/inscricoes/:id/detalhes', InscricaoController.obterDetalhes);
+
+
 // Importar rotas
 const eventoRoutes = require("./routes/eventoRoutes");
-const participanteRoutes = require("./routes/participanteRoutes");
+const participanteRoutes = require("./routes/participanteRoutes.js");
 const inscricaoRoutes = require("./routes/inscricaoRoutes");
-//DESAFIO
-const InscricaoController = require('./controllers/InscricaoController');
 
-// Usar as rotas com prefixo
 app.use("/eventos", eventoRoutes);
 app.use("/participantes", participanteRoutes);
 app.use("/inscricoes", inscricaoRoutes);
-//DESAFIO
-app.get('/inscricoes/:id/detalhes', InscricaoController.obterDetalhes);
+
 
 // Rota raiz (informativa)
 app.get("/", (req, res) => {
@@ -30,5 +38,6 @@ app.get("/", (req, res) => {
         },
     });
 });
+
 
 module.exports = app;
